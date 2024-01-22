@@ -1,5 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
 import { firebaseConfig } from "./firebase.js";
+
+// DATABASE INSERT, DELETE, READ IR t.t.
 import {
   getDatabase,
   set,
@@ -10,6 +12,7 @@ import {
   get,
 } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 
+// VISKAS KAS SUSIJE SU AUTORIZACIJA
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -22,6 +25,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 const auth = getAuth(app);
 
+/*
 const regForm = document.getElementById("registration");
 const emailInput = document.getElementById("email");
 const passwInput = document.getElementById("password");
@@ -119,7 +123,7 @@ onAuthStateChanged(auth, (user) => {
         alert(err);
       });
   } else {
-    console.log("user is signed out");
+    console.log("You're signed out !");
   }
 });
 
@@ -131,14 +135,15 @@ signoutBtn.addEventListener("click", () => {
     .then(() => {
       const panelImg = document.getElementById("panelImg");
       panelImg.remove();
-      console.log("You're signed out !");
     })
     .catch((error) => {
       console.log(error);
     });
 });
+*/
 
-/*
+///////////////////////////////////////////////////////////////////
+
 let form = document.getElementById("form");
 let carBrand = document.getElementById("carBrandInput");
 let carModel = document.getElementById("carModelInput");
@@ -224,4 +229,3 @@ getData();
 //     }
 //   });
 // });
-*/
