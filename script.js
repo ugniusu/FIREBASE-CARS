@@ -13,6 +13,9 @@ import {
 import {
   getAuth,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
@@ -24,6 +27,7 @@ const emailInput = document.getElementById("email");
 const passwInput = document.getElementById("password");
 const registerBtn = document.getElementById("register");
 const loginBtn = document.getElementById("login");
+const signoutBtn = document.getElementById("signout");
 
 registerBtn.addEventListener("click", (ev) => {
   ev.preventDefault();
@@ -48,6 +52,80 @@ registerBtn.addEventListener("click", (ev) => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+    });
+});
+
+loginBtn.addEventListener("click", (ev) => {
+  ev.preventDefault();
+
+  console.log(emailInput.value, passwInput.value);
+  const email = emailInput.value.trim();
+  const password = passwInput.value.trim();
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("user logged in", user);
+
+      const loginTime = new Date();
+
+      update(ref(db, "/users/" + user.uid), {
+        timestampt: `${loginTime}`,
+      });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+});
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    get(child(ref(db), "/users/", uid))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const userDataFromDB = snapshot.val();
+          const userRole = userDataFromDB.role;
+
+          const greetingImage = document.createElement("img");
+          greetingImage.style.width = "400px";
+          greetingImage.id = "panelImg";
+
+          if (userRole === "admin") {
+            console.log("Krc Dzeusas");
+            greetingImage.src =
+              "https://scontent-vie1-1.xx.fbcdn.net/v/t1.18169-9/12039501_1665291870381236_1282847629189266495_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=c2f564&_nc_ohc=cw98IEGkQX8AX_vAdNv&_nc_ht=scontent-vie1-1.xx&oh=00_AfDnTADIghtXJajMED6MT7OwGX17MP6BaS8Mqqdf-QVRpg&oe=65D5F86C";
+            greetingImage.alt = "Admin image";
+            // imgContainer.appendChild(greetingImage);
+          } else {
+            console.log("Virginijus is Zemaitijos esi");
+            greetingImage.src =
+              "https://i.ytimg.com/vi/HmLEXZbwZfE/hqdefault.jpg";
+          }
+          imgContainer.appendChild(greetingImage);
+        } else {
+          console.log("no data");
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  } else {
+    console.log("user is signed out");
+  }
+});
+
+signoutBtn.addEventListener("click", () => {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      const panelImg = document.getElementById("panelImg");
+      panelImg.remove();
+      console.log("You're signed out !");
+    })
+    .catch((error) => {
+      console.log(error);
     });
 });
 
