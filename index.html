@@ -19,6 +19,34 @@
   </head>
   <body>
     <h1>Car registration</h1>
+
+    <form id="registration">
+      <div>
+        <label for="email">Email</label>
+        <input
+          name="email"
+          placeholder="email"
+          type="email"
+          id="email"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="password">Password</label>
+        <input
+          name="password"
+          placeholder="password"
+          type="password"
+          id="password"
+          required
+        />
+      </div>
+
+      <button type="submit" id="register">Register</button>
+      <button type="submit" id="login">Log In</button>
+    </form>
+
     <form id="form">
       <div id="form_container">
         <input placeholder="Car Brand" type="text" id="carBrandInput" />

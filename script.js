@@ -10,9 +10,48 @@ import {
   get,
 } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
+const auth = getAuth(app);
 
+const regForm = document.getElementById("registration");
+const emailInput = document.getElementById("email");
+const passwInput = document.getElementById("password");
+const registerBtn = document.getElementById("register");
+const loginBtn = document.getElementById("login");
+
+registerBtn.addEventListener("click", (ev) => {
+  ev.preventDefault();
+
+  console.log(emailInput.value, passwInput.value);
+  const email = emailInput.value.trim();
+  const password = passwInput.value.trim();
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(user);
+
+      const registerTime = new Date();
+      set(ref(db, "/users/" + user.uid), {
+        email: email,
+        role: "simple",
+        timestamp: `${registerTime}`,
+      });
+      console.log("New user created");
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+});
+
+/*
 let form = document.getElementById("form");
 let carBrand = document.getElementById("carBrandInput");
 let carModel = document.getElementById("carModelInput");
@@ -27,12 +66,6 @@ let deleteBtn = document.getElementById("deleteBtn");
 
 insertBtn.addEventListener("click", (ev) => {
   ev.preventDefault();
-
-  //   const cname = carBrand.value;
-  //   const cmodel = carModel.value;
-  //   const cyear = carYear.value;
-  //   const cprice = carPrice.value;
-  //   const cphoto = favCarPhoto.value;
 
   set(push(ref(db, "cars/")), {
     name: carBrand.value,
@@ -104,3 +137,4 @@ getData();
 //     }
 //   });
 // });
+*/
