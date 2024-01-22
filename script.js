@@ -29,6 +29,8 @@ const registerBtn = document.getElementById("register");
 const loginBtn = document.getElementById("login");
 const signoutBtn = document.getElementById("signout");
 
+// REGISTER BUTTON
+
 registerBtn.addEventListener("click", (ev) => {
   ev.preventDefault();
 
@@ -55,6 +57,8 @@ registerBtn.addEventListener("click", (ev) => {
     });
 });
 
+// LOGIN BUTTON
+
 loginBtn.addEventListener("click", (ev) => {
   ev.preventDefault();
 
@@ -79,14 +83,17 @@ loginBtn.addEventListener("click", (ev) => {
     });
 });
 
+// AUTHENTICATION
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
-    get(child(ref(db), "/users/", uid))
+    get(child(ref(db), "/users/" + uid))
       .then((snapshot) => {
         if (snapshot.exists()) {
           const userDataFromDB = snapshot.val();
           const userRole = userDataFromDB.role;
+          console.log(userRole);
 
           const greetingImage = document.createElement("img");
           greetingImage.style.width = "400px";
@@ -115,6 +122,8 @@ onAuthStateChanged(auth, (user) => {
     console.log("user is signed out");
   }
 });
+
+// SIGN OUT BUTTON
 
 signoutBtn.addEventListener("click", () => {
   const auth = getAuth();
