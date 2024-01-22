@@ -64,7 +64,7 @@ const getData = function () {
           const carData = data[car];
           console.log("Car data:", carData);
           imgContainer.innerHTML += `
-            <div class="card" style="width:250px; height: 400px; border: 1px solid black">
+            <div class="card" style="width:250px; height: 400px; border: 1px solid black; margin-bottom: 10px">
             <img src="${carData.photo}" alt="car" style="object-fit:cover"/>
             <h2>${carData.name}</h2>
             <h6>${carData.model}</h6>
